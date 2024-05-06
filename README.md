@@ -115,33 +115,22 @@ Thanks to our bridge-type network's dns functions, we can easyly use the api con
 > ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/1e5c98c9-1de4-4a93-9b54-fe36692b20d1)
 
 
-5) Run the frontend webapp container :
 
-Username and password are provided in the source code `.simple_api/student_age.py`
+5) Test the api through the frontend :
 
-> ![6-id/passwd](https://user-images.githubusercontent.com/101605739/224590363-0fdd56ae-9fb9-45e7-8912-64a6789faa9e.png)
-
-```bash
-docker run --rm -d --name=webapp.student_list -p 80:80 --network=student_list.network -v ./website/:/var/www/html -e USERNAME=toto -e PASSWORD=python php:apache
-docker ps
-```
-> ![7-docker ps](https://user-images.githubusercontent.com/101605739/224591443-344fd2cd-ddbc-4780-bbc5-7cc0bdac156f.jpg)
-
-
-6) Test the api through the frontend :
-
-6a) Using command line :
+5a) Using command line :
 
 The next command will ask the frontend container to request the backend api and show you the output back.
 The goal is to test both if the api works and if frontend can get the student list from it.
 
 ```bash
-docker exec webapp.student_list curl -u toto:python -X GET http://api.student_list:5000/pozos/api/v1.0/get_student_ages
+curl -u toto:python -X GET http://127.0.0.1:4000/pozos/api/v1.0/get_student_ages
 ```
-> ![8-docker exec](https://user-images.githubusercontent.com/101605739/224593842-23c7f3a5-e5bc-4840-a6af-2eda0f622710.png)
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/1c7471cb-edd5-4188-b6aa-94140f9e857c)
 
 
-6b) Using a web browser `IP:80` :
+
+5b) Using a web browser `IP:4000` :
 
 - If you're running the app into a remote server or a virtual machine (e.g provisionned by eazytraining's vagrant file), please find your ip address typing `hostname -I`
 > ![9-hostname -I](https://user-images.githubusercontent.com/101605739/224594393-841a5544-7914-4b4f-91fd-90ce23200156.jpg)
