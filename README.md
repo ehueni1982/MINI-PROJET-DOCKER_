@@ -69,7 +69,6 @@ cd ./mini-projet-docker/simple_api
 docker build . -t api-pozos:1
 docker images
 ```
-> ![1-docker images](https://user-images.githubusercontent.com/101605739/224588377-b8afa11f-33b6-41ed-9f58-6e23d2054c83.jpg)
 > ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/bf242c91-711f-41b6-9d01-a7ca89f90342)
 
 
