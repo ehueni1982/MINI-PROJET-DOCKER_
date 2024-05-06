@@ -107,15 +107,17 @@ Comme nous avons déjà créé l'image de l'application, il ne vous reste plus q
 
 ```bash
 docker-compose up -d
-![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/a4723207-87f5-422d-8518-8eea86eb9839)
+````
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/a4723207-87f5-422d-8518-8eea86eb9839)
 
 Docker-compose permet de choisir quel conteneur doit démarrer en premier. Le conteneur d’api sera le premier car j’ai spécifié que l’application web.depends_on:
 
 > ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/df3e9312-7cc2-4a28-878c-e169fb2d2bb7)
-> 
-![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/0e4e15cc-50aa-4199-a940-89fed442a682)
 
-Et l’application fonctionne : ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/241aa70a-0bb9-42e5-a4ca-0c0ea22e6008)
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/0e4e15cc-50aa-4199-a940-89fed442a682)
+
+Et l’application fonctionne :
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/241aa70a-0bb9-42e5-a4ca-0c0ea22e6008)
 
 2) Créer un registre et son frontend
 J’ai utilisé image pour le registre, et pour son interface graphique frontale et passé quelques variables d’environnement :registry:2joxit/docker-registry-ui:static
@@ -144,7 +146,7 @@ docker run -d -p 5000:5000 --name registry-pozos --network student-list_api-pozo
 
 
 > ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/715bce28-2e53-49a8-a39d-2116fcb763f6)
-> 
+
 
 
 > ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/180e0814-f033-4120-adda-3fe1209a1b2c)
