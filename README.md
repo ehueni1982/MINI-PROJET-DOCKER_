@@ -79,7 +79,6 @@ docker images
 docker network create pozos
 docker network ls
 ```
-> ![2-docker network ls](https://user-images.githubusercontent.com/101605739/224588523-a842cd26-c5d5-4338-8547-2e31578655c9.jpg)
 > ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/f7b9c398-b8ae-4500-b29b-4e2cdaee8391)
 
 
