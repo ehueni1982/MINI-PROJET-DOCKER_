@@ -132,34 +132,15 @@ curl -u toto:python -X GET http://127.0.0.1:4000/pozos/api/v1.0/get_student_ages
 
 5b) Using a web browser `IP:4000` :
 
-- If you're running the app into a remote server or a virtual machine (e.g provisionned by eazytraining's vagrant file), please find your ip address typing `hostname -I`
-> ![9-hostname -I](https://user-images.githubusercontent.com/101605739/224594393-841a5544-7914-4b4f-91fd-90ce23200156.jpg)
-
-- If you are working on PlayWithDocker, just `open the 80 port` on the gui
-- If not, type `localhost:80`
-
-Click the button
-
-> ![10-check webpage](https://user-images.githubusercontent.com/101605739/224594989-0cb5bcb7-d033-4969-a12e-0b2aa9953a97.jpg)
-
-
-7) Clean the workspace :
-
-Thanks to the `--rm` argument we used while starting our containers, they will be removed as they stop.
-Remove the network previously created.
-
+- If you're running the app into a remote server or a virtual machine (e.g provisionned by eazytraining's vagrant file), please find your ip address typing `hostname -I` on centos
 
 ```bash
-docker stop api.student_list
-docker stop webapp.student_list
-docker network rm student_list.network
-docker network ls
-docker ps
-```
-> ![11-clean-up](https://user-images.githubusercontent.com/101605739/224595124-3ea15f42-e6d5-462a-92a0-52af7c73c17a.jpg)
+hostname -I
+``
+![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/8d7e1bf1-ec0b-4cf5-8b92-9bea54491624)
 
-
-
+- If you are working on PlayWithDocker, just `open the 8082 port` on the gui
+- If not, type `localhost:8082`
 
 ## Deployment
 
@@ -172,20 +153,23 @@ As we've already created the application image, now you just have to run :
 ```bash
 docker-compose up -d
 ```
+![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/a4723207-87f5-422d-8518-8eea86eb9839)
 
 Docker-compose permits to chose which container must start first.
 The api container will be first as I specified that the webapp `depends_on:` it.
-> ![12-depends on](https://user-images.githubusercontent.com/101605739/224595564-e010cc3f-700b-4b3e-9251-904dafbe4067.png)
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/df3e9312-7cc2-4a28-878c-e169fb2d2bb7)
+> 
+![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/0e4e15cc-50aa-4199-a940-89fed442a682)
 
 And the application works :
-> ![13-check app](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/2002c41f-6590-4491-b571-65de7ba1457e)
+![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/241aa70a-0bb9-42e5-a4ca-0c0ea22e6008)
 
 
 2) Create a registry and its frontend
 
 I used `registry:2` image for the registry, and `joxit/docker-registry-ui:static` for its frontend gui and passed some environment variables :
 
-> ![14-gui registry env var](https://user-images.githubusercontent.com/101605739/224596117-76cda01c-f2f6-4a18-862f-95d56449f98a.png)
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/264a171e-825a-428c-ac83-0400157ffb28)
 
 
 E.g we'll be able to delete images from the registry via the gui.
@@ -193,30 +177,52 @@ E.g we'll be able to delete images from the registry via the gui.
 ```bash
 docker-compose -f docker-compose.registry.yml up -d
 ```
-> ![15-check gui reg](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/99f182f1-bc73-458c-8b29-207a681a31fd)
 
-
-3) Push an image on the registry and test the gui
+3) Run an image on the registry and test the gui
 
 You have to rename it before (`:latest` is optional) :
 
 > NB: for this exercise, I have left the credentials in the **.yml** file.
 
 ```bash
-docker login
-docker image tag api.student_list.img:latest localhost:5000/pozos/api.student_list.img:latest
-docker images
-docker image push localhost:5000/pozos/api.student_list.img:latest
+docker run -d -p 5000:5000 --name registry-pozos --network student-list_api-pozos registry:2
 ```
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/ea0feac3-dcd2-4a48-ae73-6f37a537ab32)
 
-> ![16-push image to registry](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/4dbff256-72ae-4c6e-b076-65e705828f28)
+4) Rename Registry and push
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/ec34e0aa-ff95-4e26-8810-a8fbe5fd0b08)
 
-> ![17-full reg](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/fbc9cd2b-ec4b-4211-ba26-1a454936b204)
+  
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/d733e7db-b056-495c-bff5-e29f17d48bf1)
 
-> ![18-full reg details](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/3c89e9cc-f1f4-42f8-bea4-4e3ec1672cbe)
+
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/715bce28-2e53-49a8-a39d-2116fcb763f6)
+> 
 
 
-------------
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/180e0814-f033-4120-adda-3fe1209a1b2c)
+
+5) Push another registry image
+
+   docker images
+
+```bash
+Docker image tag joxit/docker-registry-ui :1.5-static localhost :5000/joxit/docker-registry-ui :1.5-angora
+```
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/f009a6a3-314f-4275-8e61-e505197818bf)
+
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/e3aa2128-a23f-430b-b64b-23e1bc22fe17)
+
+```bash
+Docker push localhost:5000/joxit/docker-registry-ui:1.5-angora
+```
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/db147d9a-e431-4332-8439-f6bfd1d52133)
+
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/f7ecd30d-1b17-421e-a646-60757faab9ec)
+
+''''''''''''''''''''''''''''''''''''
+
+
 
 
 # This concludes my Docker mini-project run report.
