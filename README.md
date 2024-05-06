@@ -111,10 +111,8 @@ You need to update the following line before running the website container to ma
 
 Thanks to our bridge-type network's dns functions, we can easyly use the api container name with the port we saw just before to adapt our website
 
-```bash
-sed -i s\<api_ip_or_name:port>\api.student_list:5000\g ./website/index.php
-```
-> ![5-api.student_list:5000](https://user-images.githubusercontent.com/101605739/224590958-49c2ce64-c9a0-4655-93da-552f27f78b2f.png)
+
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/1e5c98c9-1de4-4a93-9b54-fe36692b20d1)
 
 
 5) Run the frontend webapp container :
