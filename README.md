@@ -91,15 +91,14 @@ docker run --rm -d --network pozos --name test-api-pozos -v ${PWD}/student_age.j
 docker ps
 ```
 
-> ![3-docker ps](https://user-images.githubusercontent.com/101605739/224589378-abcc3f7d-d5c6-4a81-ba28-767cb6cd7b7c.jpg)
 >
 > ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/fab442f5-8f66-4c87-ba9a-388914ae2199)
 
 
-As you can see, the api backend container is listening to the 5000 port.
-This internal port can be reached by another container from the same network so I chose not to expose it.
+As you can see, the api backend container is listening to the 4000 port.
+This internal port can be reached by another container from the same network so I chose  to expose on the port 5000.
 
-I also had to mount the `./simple_api/` local directory in the `/data/` internal container directory so the api can use the `student_age.json` list 
+I also had to mount the `${PWD}/` local directory in the `:/data/` internal container directory so the api can use the `student_age.json` list 
 
 
 > ![4-./simple_api/:/data/](https://user-images.githubusercontent.com/101605739/224589839-7a5d47e6-fdff-40e4-a803-99ebc9d70b03.png)
