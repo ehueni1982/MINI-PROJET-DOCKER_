@@ -87,9 +87,11 @@ docker network ls
 
 ```bash
 cd ..
-docker run --rm -d --name=api.student_list --network=student_list.network -v ./simple_api/:/data/ api.student_list.img
+docker run --rm -d --network pozos --name test-api-pozos -v ${PWD}/student_age.json:/data/student_age.json -p 4000:5000 api-pozos:1
 docker ps
 ```
+![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/1a2c230d-833c-408d-90f6-c476fced27ce)
+
 > ![3-docker ps](https://user-images.githubusercontent.com/101605739/224589378-abcc3f7d-d5c6-4a81-ba28-767cb6cd7b7c.jpg)
 
 As you can see, the api backend container is listening to the 5000 port.
