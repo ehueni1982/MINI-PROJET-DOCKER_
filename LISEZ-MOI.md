@@ -18,6 +18,8 @@ Dimanche 5 mai 2024
 
 
 Application
+
+
 J’ai dû déployer une application nommée « student_list », qui est très basique et permet à POZOS d’afficher la liste de certains élèves avec leur âge.
 
 student_list’application comporte deux modules :
