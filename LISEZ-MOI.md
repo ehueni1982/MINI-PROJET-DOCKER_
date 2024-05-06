@@ -26,6 +26,8 @@ student_list’application comporte deux modules :
 
 Le premier module est une API REST (avec authentification de base nécessaire) qui envoie la liste de souhaits de l’étudiant sur la base d’un fichier JSON
 Le deuxième module est une application web écrite en HTML + PHP qui permet à l’utilisateur final d’obtenir une liste d’étudiants
+
+
 Le besoin
 
 Mon travail consistait à :
