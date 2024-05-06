@@ -1,229 +1,232 @@
-# Projet student-list
+# student-list project
 
-Veuillez trouver la consigne en cliquant [ici](https://github.com/diranetafen/student-list.git "ici")
+Please find the specifications by clicking [here](https://github.com/diranetafen/student-list.git "here")
 
-!["Crédit image : eazytraining.fr"](https://eazytraining.fr/wp-content/uploads/2020/04/pozos-logo.png) ![projet](https://user-images.githubusercontent.com/18481009/84582395-ba230b00-adeb-11ea-9453-22ed1be7e268.jpg)
+!["Crédit image : eazytraining.fr"](https://eazytraining.fr/wp-content/uploads/2020/04/pozos-logo.png) ![project](https://user-images.githubusercontent.com/18481009/84582395-ba230b00-adeb-11ea-9453-22ed1be7e268.jpg)
 
 ------------
 
-Prénom : Abdel-had
+Firstname : Ehueni Barthelémy
 
-Nom de famille : HANAMI
+Surname : ANGORA
 
-Pour le 12ème Bootcamp DevOps d'Eazytraining
+For Eazytraining's 13th DevOps Bootcamp
 
-Période : mars-avril-mai
+Period : march-april-may
 
-Dimanche 12 mars 2023
+Sunday the 5th, may-2024
 
-LinkedIn : https://www.linkedin.com/in/abdel-had-hanami/
+
 
 
 ## Application
 
-J'ai dû déployer une application nommée "*student_list*", très basique, qui permet à POZOS d'afficher la liste de certains étudiants avec leur âge.
+I had to deploy an application named "*student_list*", which is very basic and enables POZOS to show the list of some students with their age.
 
-L'application student_list comporte deux modules :
+student_list application has two modules:
 
-- Le premier module est une API REST (nécessitant une authentification de base) qui envoie la liste souhaitée des étudiants basée sur un fichier JSON
-- Le deuxième module est une application web écrite en HTML + PHP qui permet à l'utilisateur final d'obtenir une liste d'étudiants
-
-
-## Le besoin
-
-Mon travail consistait à :
-1) construire un conteneur pour chaque module
-2) les faire interagir entre eux
-3) fournir un registre privé
+- The first module is a REST API (with basic authentication needed) who send the desire list of the student based on JSON file
+- The second module is a web app written in HTML + PHP who enable end-user to get a list of students
 
 
-## Mon plan
+## The need
 
-D'abord, laissez-moi vous présenter les six ***fichiers*** de ce projet et leur rôle
-
-Ensuite, je vous montrerai comment j'ai ***construit*** et testé l'architecture pour justifier mes choix
-
-La troisième et dernière partie concernera le processus de ***déploiement*** que je suggère pour cette application.
-
-
-### Rôle des fichiers
-
-Dans mon livrable, vous trouverez trois fichiers principaux : un ***Dockerfile***, un ***docker-compose.yml*** et un ***docker-compose.registry.yml***
-
-- docker-compose.yml : pour lancer l'application (API et application web)
-- docker-compose.registry.yml : pour lancer le registre local et son interface utilisateur
-- simple_api/student_age.py : contient le code source de l'API en python
-- simple_api/Dockerfile : pour construire l'image de l'API avec le code source à l'intérieur
-- simple_api/student_age.json : contient le nom et l'âge des étudiants au format JSON
-- index.php : page PHP où l'utilisateur final se connectera pour interagir avec le service et lister les étudiants avec leur âge.
+My work was to :
+1) build one container for each module
+2) make them interact with each other on the same network
+3) provide a private registry on the same network
 
 
-## Construire et tester
+## My plan
 
-Considérant que vous venez de cloner ce dépôt, vous devez suivre ces étapes pour préparer l'application 'student_list' :
+First, i introduce you the six ***files*** of this project and their role 
 
-1) Changez de répertoire et construisez l'image du conteneur api :
+Then, I'll show you how I ***built*** and tested the architecture to justify my choices
+
+Third and last part will be about to provide the ***deployment*** process I suggest for this application.
+
+
+### The files' role
+
+In my delivery you can find three main files : a ***Dockerfile***, a ***docker-compose.yml*** and a ***docker-compose.registry.yml***
+
+- docker-compose.yml: to launch the application (API and web app)
+- docker-compose.registry.yml: to launch the local registry and its frontend
+- simple_api/student_age.py: contains the source code of the API in python
+- simple_api/Dockerfile: to build the API image with the source code in it
+- simple_api/student_age.json: contains student name with age on JSON format
+- index.php: PHP  page where end-user will be connected to interact with the service to list students with their age.
+
+
+## Build and test
+
+Considering you just have cloned this repository, you have to follow those steps to get the 'student_list' application ready :
+
+1) Change directory and build the api container image :
 
 ```bash
 cd ./mini-projet-docker/simple_api
-docker build . -t api.student_list.img
+docker build . -t api-pozos:1
 docker images
 ```
-> ![1-docker images](https://user-images.githubusercontent.com/101605739/224588377-b8afa11f-33b6-41ed-9f58-6e23d2054c83.jpg)
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/bf242c91-711f-41b6-9d01-a7ca89f90342)
 
-2) Créez un réseau de type pont pour que les deux conteneurs puissent se contacter par leurs noms grâce aux fonctions dns :
+
+
+2) Create a bridge-type network for the two containers to be able to contact each other by their names thanks to dns functions :
 
 ```bash
-docker network create student_list.network --driver=bridge
+docker network create pozos
 docker network ls
 ```
-> ![2-docker network ls](https://user-images.githubusercontent.com/101605739/224588523-a842cd26-c5d5-4338-8547-2e31578655c9.jpg)
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/f7b9c398-b8ae-4500-b29b-4e2cdaee8391)
 
 
-3) Revenez au répertoire racine du projet et lancez le conteneur de l'api backend avec ces arguments :
+
+3) Move back to the root dir of the project and run the backend api container with those arguments :
 
 ```bash
 cd ..
-docker run --rm -d --name=api.student_list --network=student_list.network -v ./simple_api/:/data/ api.student_list.img
+docker run --rm -d --network pozos --name test-api-pozos -v ${PWD}/student_age.json:/data/student_age.json -p 4000:5000 api-pozos:1
 docker ps
 ```
-> ![3-docker ps](https://user-images.githubusercontent.com/101605739/224589378-abcc3f7d-d5c6-4a81-ba28-767cb6cd7b7c.jpg)
 
-Comme vous pouvez le voir, le conteneur backend api écoute sur le port 5000.
-Ce port interne peut être atteint par un autre conteneur du même réseau, donc j'ai choisi de ne pas l'exposer.
+>
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/fab442f5-8f66-4c87-ba9a-388914ae2199)
 
-J'ai aussi dû monter le répertoire local `./simple_api/` dans le répertoire interne `/data/` du conteneur pour que l'api puisse utiliser la liste `student_age.json`
+
+As you can see, the api backend container is listening to the 4000 port.
+This internal port can be reached by another container from the same network so I chose  to expose on the port 5000.
+
+I also had to mount the `${PWD}/` local directory in the `:/data/` internal container directory so the api can use the `student_age.json` list 
 
 
 > ![4-./simple_api/:/data/](https://user-images.githubusercontent.com/101605739/224589839-7a5d47e6-fdff-40e4-a803-99ebc9d70b03.png)
 
 
-4) Mettez à jour le fichier `index.php` :
+4) Update the `index.php` file :
 
-Vous devez mettre à jour la ligne suivante avant de lancer le conteneur du site web pour que ***api_ip_or_name*** et ***port*** correspondent à votre déploiement
+You need to update the following line before running the website container to make ***api_ip_or_name*** and ***port*** fit your deployment
    ` $url = 'http://<api_ip_or_name:port>/pozos/api/v1.0/get_student_ages';`
 
-Grâce aux fonctions dns de notre réseau de type pont, nous pouvons facilement utiliser le nom du conteneur api avec le port que nous avons vu juste avant pour adapter notre site web
+Thanks to our bridge-type network's dns functions, we can easyly use the api container name with the port we saw just before to adapt our website
+
+
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/1e5c98c9-1de4-4a93-9b54-fe36692b20d1)
+
+
+
+5) Test the api through the frontend :
+
+5a) Using command line :
+
+The next command will ask the frontend container to request the backend api and show you the output back.
+The goal is to test both if the api works and if frontend can get the student list from it.
 
 ```bash
-sed -i s\<api_ip_or_name:port>\api.student_list:5000\g ./website/index.php
+curl -u toto:python -X GET http://127.0.0.1:4000/pozos/api/v1.0/get_student_ages
 ```
-> ![5-api.student_list:5000](https://user-images.githubusercontent.com/101605739/224590958-49c2ce64-c9a0-4655-93da-552f27f78b2f.png)
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/1c7471cb-edd5-4188-b6aa-94140f9e857c)
 
 
-5) Lancez le conteneur de l'application web frontale :
 
-Le nom d'utilisateur et le mot de passe sont fournis dans le code source `.simple_api/student_age.py`
+5b) Using a web browser `IP:4000` :
 
-> ![6-id/passwd](https://user-images.githubusercontent.com/101605739/224590363-0fdd56ae-9fb9-45e7-8912-64a6789faa9e.png)
+- If you're running the app into a remote server or a virtual machine (e.g provisionned by eazytraining's vagrant file), please find your ip address typing `hostname -I` on centos
 
 ```bash
-docker run --rm -d --name=webapp.student_list -p 80:80 --network=student_list.network -v ./website/:/var/www/html -e USERNAME=toto -e PASSWORD=python php:apache
-docker ps
-```
-> ![7-docker ps](https://user-images.githubusercontent.com/101605739/224591443-344fd2cd-ddbc-4780-bbc5-7cc0bdac156f.jpg)
+hostname -I
+``
+![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/8d7e1bf1-ec0b-4cf5-8b92-9bea54491624)
 
+- If you are working on PlayWithDocker, just `open the 8082 port` on the gui
+- If not, type `localhost:8082`
 
-6) Testez l'api via le frontend :
+## Deployment
 
-6a) En utilisant la ligne de commande :
+As the tests passed we can now 'composerize' our infrastructure by putting the `docker run` parameters in ***infrastructure as code*** format into a `docker-compose.yml` file.
 
-La commande suivante demandera au conteneur frontal de requêter l'api backend et de vous montrer la sortie.
-Le but est de tester à la fois si l'api fonctionne et si le frontend peut obtenir la liste des étudiants.
+1) Run the application (api + webapp) :
 
-```bash
-docker exec webapp.student_list curl -u toto:python -X GET http://api.student_list:5000/pozos/api/v1.0/get_student_ages
-```
-> ![8-docker exec](https://user-images.githubusercontent.com/101605739/224593842-23c7f3a5-e5bc-4840-a6af-2eda0f622710.png)
-
-
-6b) En utilisant un navigateur web `IP:80` :
-
-- Si vous exécutez l'application sur un serveur distant ou une machine virtuelle (par exemple, provisionnée par le fichier vagrant d'eazytraining), veuillez trouver votre adresse IP en tapant `hostname -I`
-> ![9-hostname -I](https://user-images.githubusercontent.com/101605739/224594393-841a5544-7914-4b4f-91fd-90ce23200156.jpg)
-
-- Si vous travaillez sur PlayWithDocker, ouvrez simplement le port 80 sur l'interface graphique
-- Sinon, tapez `localhost:80`
-
-Cliquez sur le bouton
-
-> ![10-check webpage](https://user-images.githubusercontent.com/101605739/224594989-0cb5bcb7-d033-4969-a12e-0b2aa9953a97.jpg)
-
-
-7) Nettoyez l'espace de travail :
-
-Grâce à l'argument `--rm` que nous avons utilisé en démarrant nos conteneurs, ils seront supprimés dès qu'ils s'arrêteront.
-Supprimez le réseau précédemment créé.
-
-
-```bash
-docker stop api.student_list
-docker stop webapp.student_list
-docker network rm student_list.network
-docker network ls
-docker ps
-```
-> ![11-clean-up](https://user-images.githubusercontent.com/101605739/224595124-3ea15f42-e6d5-462a-92a0-52af7c73c17a.jpg)
-
-
-## Déploiement
-
-Comme les tests ont réussis, nous pouvons maintenant "composeriser" notre infrastructure en mettant les paramètres `docker run` au format ***infrastructure as code*** dans un fichier `docker-compose.yml`.
-
-1) Exécuter l'application (API + webapp) :
-
-Comme nous avons déjà créé l'image de l'application, il vous suffit maintenant d'exécuter :
+As we've already created the application image, now you just have to run :
 
 ```bash
 docker-compose up -d
 ```
+![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/a4723207-87f5-422d-8518-8eea86eb9839)
 
-Docker-compose permet de choisir quel conteneur doit démarrer en premier grâce au paramètre `depends_on:`.
-Ici, le conteneur de l'API démarrera en premier.
-> ![12-dépend de](https://user-images.githubusercontent.com/101605739/224595564-e010cc3f-700b-4b3e-9251-904dafbe4067.png)
+Docker-compose permits to chose which container must start first.
+The api container will be first as I specified that the webapp `depends_on:` it.
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/df3e9312-7cc2-4a28-878c-e169fb2d2bb7)
+> 
+![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/0e4e15cc-50aa-4199-a940-89fed442a682)
 
-Et l'application fonctionne :
-> ![13-vérifier app](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/2002c41f-6590-4491-b571-65de7ba1457e)
+And the application works :
+![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/241aa70a-0bb9-42e5-a4ca-0c0ea22e6008)
 
 
-2) Créer un registre et son frontend
+2) Create a registry and its frontend
 
-J'ai utilisé l'image `registry:2` pour le registre, et `joxit/docker-registry-ui:static` pour son interface utilisateur frontend et passé quelques variables d'environnement :
+I used `registry:2` image for the registry, and `joxit/docker-registry-ui:static` for its frontend gui and passed some environment variables :
 
-> ![14-gui registre env var](https://user-images.githubusercontent.com/101605739/224596117-76cda01c-f2f6-4a18-862f-95d56449f98a.png)
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/264a171e-825a-428c-ac83-0400157ffb28)
 
-Par exemple, nous pourrons supprimer des images du registre via l'interface utilisateur.
+
+E.g we'll be able to delete images from the registry via the gui.
 
 ```bash
 docker-compose -f docker-compose.registry.yml up -d
 ```
-> ![15-vérifier gui reg](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/99f182f1-bc73-458c-8b29-207a681a31fd)
 
-3) Se connecter et pousser une image sur le registre et tester l'interface utilisateur
+3) Run an image on the registry and test the gui
 
-Vous devez la renommer avant (`:latest` est facultatif) :
+You have to rename it before (`:latest` is optional) :
 
-> NB : pour cet exercice j'ai laissé les identifiants dans le fichier **.yml**
+> NB: for this exercise, I have left the credentials in the **.yml** file.
 
 ```bash
-docker login
-docker image tag api.student_list.img:latest localhost:5000/pozos/api.student_list.img:latest
-docker images
-docker image push localhost:5000/pozos/api.student_list.img:latest
+docker run -d -p 5000:5000 --name registry-pozos --network student-list_api-pozos registry:2
 ```
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/ea0feac3-dcd2-4a48-ae73-6f37a537ab32)
 
-> ![16-pousser image au registre](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/4dbff256-72ae-4c6e-b076-65e705828f28)
+4) Rename Registry and push
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/ec34e0aa-ff95-4e26-8810-a8fbe5fd0b08)
 
-> ![17-registre complet](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/fbc9cd2b-ec4b-4211-ba26-1a454936b204)
-
-> ![18-détails registre complet](https://github.com/Abdel-had/mini-projet-docker/assets/101605739/3c89e9cc-f1f4-42f8-bea4-4e3ec1672cbe)
-
-
-------------
+  
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/d733e7db-b056-495c-bff5-e29f17d48bf1)
 
 
-# Cela conclut mon rapport d'exécution du mini-projet Docker.
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/715bce28-2e53-49a8-a39d-2116fcb763f6)
+> 
 
-Tout au long de ce projet, j'ai eu l'occasion de créer une image Docker personnalisée, de configurer des réseaux et des volumes, et de déployer des applications en utilisant docker-compose. Dans l'ensemble, ce projet a été une expérience enrichissante qui m'a permis de renforcer mes compétences techniques et de mieux comprendre les principes des microservices. Je suis maintenant mieux équipé pour aborder des projets similaires à l'avenir et contribuer à améliorer les processus de conteneurisation et de déploiement au sein de mon équipe et de mon organisation.
 
-![octocat](https://myoctocat.com/assets/images/base-octocat.svg)
+> ![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/180e0814-f033-4120-adda-3fe1209a1b2c)
+
+5) Push another registry image
+
+   docker images
+
+```bash
+Docker image tag joxit/docker-registry-ui :1.5-static localhost :5000/joxit/docker-registry-ui :1.5-angora
+```
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/f009a6a3-314f-4275-8e61-e505197818bf)
+
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/e3aa2128-a23f-430b-b64b-23e1bc22fe17)
+
+```bash
+Docker push localhost:5000/joxit/docker-registry-ui:1.5-angora
+```
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/db147d9a-e431-4332-8439-f6bfd1d52133)
+
+>![image](https://github.com/ehueni1982/MINI-PROJET-DOCKER_/assets/157939806/f7ecd30d-1b17-421e-a646-60757faab9ec)
+
+''''''''''''''''''''''''''''''''''''
+
+
+
+
+# This concludes my Docker mini-project run report.
+
+Throughout this project, I had the opportunity to create a custom Docker image, configure networks and volumes, and deploy applications using docker-compose. Overall, this project has been a rewarding experience that has allowed me to strengthen my technical skills and gain a better understanding of microservices principles. I am now better equipped to tackle similar projects in the future and contribute to improving containerization and deployment processes within my team and organization.
+
+![octocat](https://myoctocat.com/assets/images/base-octocat.svg) 
